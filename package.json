@@ -8,6 +8,7 @@
     "start": "ts-node src/index.ts"
   },
   "dependencies": {
+    "@vercel/node": "^5.5.28",
     "axios": "^1.6.0",
     "cheerio": "^1.0.0-rc.12",
     "puppeteer": "^22.0.0",
