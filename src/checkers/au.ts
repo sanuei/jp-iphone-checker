@@ -1,14 +1,30 @@
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-extra';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import { Checker, CheckResult, Status } from '../types';
+
+puppeteer.use(StealthPlugin());
 
 export class AuChecker implements Checker {
   async check(imei: string): Promise<CheckResult> {
     const url = 'https://my.au.com/cmn/WCV0010001/WCV0010001.jsp';
     const browser = await puppeteer.launch({
         headless: true,
-        args: ['--no-sandbox']
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-web-security'
+        ]
     });
     const page = await browser.newPage();
+    await page.setExtraHTTPHeaders({
+        'Accept-Language': 'ja,en-US;q=0.9,en;q=0.8',
+        'Referer': 'https://www.au.com/',
+        'Sec-Ch-Ua': '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
+        'Sec-Ch-Ua-Mobile': '?0',
+        'Sec-Ch-Ua-Platform': '"macOS"'
+    });
+    // Set a realistic User-Agent
+    await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
 
     try {
       await page.goto(url, { waitUntil: 'domcontentloaded' });

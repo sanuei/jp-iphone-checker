@@ -13,23 +13,32 @@ export class DocomoChecker implements Checker {
     try {
       await page.goto(url, { waitUntil: 'domcontentloaded' });
       
-      // Docomo usually has a "Next" button or directly inputs.
-      // Often you have to click "Agree" to terms first.
-      // Let's look for a link or button to proceed.
-      // Selector might be 'a' with text containing "次へ" or input.
+      // Docomo: Click the "Next" / "Confirm" button to go to search.php
+      const linkSelector = 'a[href="search.php"]';
+      await page.waitForSelector(linkSelector, { timeout: 5000 });
+      await Promise.all([
+          page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 15000 }),
+          page.click(linkSelector)
+      ]);
+
+      // Now we should be on search.php
+      const inputSelector = 'input[name="s"]'; // Assuming 's' or trying to find by type
+      // Wait for input
+      try {
+          await page.waitForSelector(inputSelector, { timeout: 15000 });
+      } catch {
+          // If name="s" is wrong, try generic text input
+          await page.waitForSelector('input[type="text"]', { timeout: 15000 });
+      }
       
-      // Assuming straightforward for now (checking main page).
-      // If it's the top page, usually need to click "利用制限の確認"
-      
-      // I'll try to find the input directly.
-      const inputSelector = 'input[name="imei"], input[type="text"]';
-      if (await page.$(inputSelector)) {
-          await page.type(inputSelector, imei);
-          await page.click('input[type="submit"]');
+      // Find the correct input (often the first text input on search.php)
+      const input = await page.$('input[name="s"]') || await page.$('input[type="text"]');
+      if (input) {
+          await input.type(imei);
+          // Submit
+          await page.click('input[type="submit"], button[type="submit"]');
       } else {
-          // Maybe need to click a link first?
-          // I'll return specific error if input not found
-          throw new Error("Input field not found, navigation might be required");
+          throw new Error("Input field not found on search.php");
       }
 
       await page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 5000 });
