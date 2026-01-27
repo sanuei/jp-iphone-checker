@@ -2,14 +2,15 @@
   "version": 2,
   "builds": [
     {
-      "src": "src/api/index.ts",
+      "src": "dist/api/index.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/check",
-      "dest": "/src/api/index.ts"
+      "dest": "/dist/api/index.js"
     }
-  ]
+  ],
+  "installCommand": "npm install && npm run build"
 }

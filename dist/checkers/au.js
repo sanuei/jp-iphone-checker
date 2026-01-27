@@ -4,15 +4,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuChecker = void 0;
-const puppeteer_1 = __importDefault(require("puppeteer"));
+const puppeteer_extra_1 = __importDefault(require("puppeteer-extra"));
+const puppeteer_extra_plugin_stealth_1 = __importDefault(require("puppeteer-extra-plugin-stealth"));
+puppeteer_extra_1.default.use((0, puppeteer_extra_plugin_stealth_1.default)());
 class AuChecker {
     async check(imei) {
         const url = 'https://my.au.com/cmn/WCV0010001/WCV0010001.jsp';
-        const browser = await puppeteer_1.default.launch({
+        const browser = await puppeteer_extra_1.default.launch({
             headless: true,
-            args: ['--no-sandbox']
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-web-security'
+            ]
         });
         const page = await browser.newPage();
+        await page.setExtraHTTPHeaders({
+            'Accept-Language': 'ja,en-US;q=0.9,en;q=0.8',
+            'Referer': 'https://www.au.com/',
+            'Sec-Ch-Ua': '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
+            'Sec-Ch-Ua-Mobile': '?0',
+            'Sec-Ch-Ua-Platform': '"macOS"'
+        });
+        // Set a realistic User-Agent
+        await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
         try {
             await page.goto(url, { waitUntil: 'domcontentloaded' });
             // Au selectors (guessing common ones or based on past knowledge)

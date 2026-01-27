@@ -1,7 +1,7 @@
 import { SoftBankChecker } from '../checkers/softbank';
 import { AuChecker } from '../checkers/au';
 import { DocomoChecker } from '../checkers/docomo';
-import { VercelRequest, VercelResponse } from '@vercel/node';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { imei } = req.query;
@@ -19,6 +19,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     return res.status(200).json({ results });
   } catch (error: any) {
-    return res.status(500).json({ error: error.message });
+    console.error("Handler error:", error);
+    return res.status(500).json({ error: error.message || 'Internal Server Error' });
   }
 }
