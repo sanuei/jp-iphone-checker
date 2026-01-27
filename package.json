@@ -1,0 +1,21 @@
+{
+  "name": "jp-iphone-checker",
+  "version": "1.0.0",
+  "description": "Check Japanese iPhone Network Restriction (Hanotei) and Warranty",
+  "main": "index.js",
+  "scripts": {
+    "test": "ts-node src/test.ts",
+    "start": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "puppeteer": "^22.0.0",
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.0",
+    "@types/node": "^20.0.0",
+    "@types/puppeteer": "^7.0.0"
+  }
+}
