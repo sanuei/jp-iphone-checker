@@ -9,8 +9,10 @@
     "build": "tsc"
   },
   "dependencies": {
+    "@sparticuz/chromium": "^143.0.4",
     "@vercel/node": "^3.0.0",
     "puppeteer": "^22.0.0",
+    "puppeteer-core": "^24.36.1",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2"
   },

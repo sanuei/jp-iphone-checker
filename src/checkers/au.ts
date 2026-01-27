@@ -1,20 +1,15 @@
-import puppeteer from 'puppeteer-extra';
-import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import { Checker, CheckResult, Status } from '../types';
-
-puppeteer.use(StealthPlugin());
+import { launchBrowser } from '../browser-utils';
 
 export class AuChecker implements Checker {
   async check(imei: string): Promise<CheckResult> {
     const url = 'https://my.au.com/cmn/WCV0010001/WCV0010001.jsp';
-    const browser = await puppeteer.launch({
-        headless: true,
-        args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-web-security'
-        ]
-    });
+    const browser = await launchBrowser();
+    
+    // Stealth is handled inside launchBrowser for local, 
+    // for Vercel/Chromium it might not be needed or we need to add args there.
+    // For now we assume launchBrowser returns a good browser instance.
+    
     const page = await browser.newPage();
     await page.setExtraHTTPHeaders({
         'Accept-Language': 'ja,en-US;q=0.9,en;q=0.8',

@@ -1,13 +1,10 @@
-import puppeteer from 'puppeteer';
 import { Checker, CheckResult, Status } from '../types';
+import { launchBrowser } from '../browser-utils';
 
 export class DocomoChecker implements Checker {
   async check(imei: string): Promise<CheckResult> {
     const url = 'http://nw-restriction.nttdocomo.co.jp/top.php';
-    const browser = await puppeteer.launch({
-        headless: true,
-        args: ['--no-sandbox']
-    });
+    const browser = await launchBrowser();
     const page = await browser.newPage();
 
     try {

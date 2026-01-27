@@ -1,14 +1,10 @@
-import puppeteer from 'puppeteer';
 import { Checker, CheckResult, Status } from '../types';
+import { launchBrowser } from '../browser-utils';
 
 export class SoftBankChecker implements Checker {
   async check(imei: string): Promise<CheckResult> {
     const url = 'https://ct11.my.softbank.jp/WBF/icv';
-    // Launch puppeteer. In production/serverless, might need different args.
-    const browser = await puppeteer.launch({
-        headless: true,
-        args: ['--no-sandbox']
-    });
+    const browser = await launchBrowser();
     const page = await browser.newPage();
 
     try {
