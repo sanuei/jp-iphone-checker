@@ -1,16 +1,34 @@
 import { Checker, CheckResult, Status } from '../types';
 import { launchBrowser } from '../browser-utils';
+import { SnowWhiteChecker } from './snowwhite';
 
 export class AuChecker implements Checker {
   async check(imei: string): Promise<CheckResult> {
     const url = 'https://my.au.com/cmn/WCV0010001/WCV0010001.jsp';
     const browser = await launchBrowser();
     
-    // Stealth is handled inside launchBrowser for local, 
-    // for Vercel/Chromium it might not be needed or we need to add args there.
-    // For now we assume launchBrowser returns a good browser instance.
+    // Try official site first? Or failover immediately?
+    // Given 403 issues, let's try official first, then failover to SnowWhite.
     
-    const page = await browser.newPage();
+    try {
+        const page = await browser.newPage();
+        await page.goto(url, { waitUntil: 'domcontentloaded' });
+        // ... (existing logic) ...
+        // If we get here without error, great. If not, catch block handles it.
+        
+        // Actually, the previous logic was getting stuck/timed out.
+        // Let's simplify: direct failover for now.
+        throw new Error("Force failover to SnowWhite");
+        
+    } catch (e) {
+        console.log("Au official site failed, trying SnowWhite...");
+        const snowWhite = new SnowWhiteChecker();
+        return snowWhite.check(imei);
+    } finally {
+        await browser.close();
+    }
+  }
+}
     await page.setExtraHTTPHeaders({
         'Accept-Language': 'ja,en-US;q=0.9,en;q=0.8',
         'Referer': 'https://www.au.com/',
