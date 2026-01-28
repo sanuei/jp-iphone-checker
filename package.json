@@ -9,15 +9,15 @@
     "build": "./node_modules/typescript/bin/tsc"
   },
   "dependencies": {
+    "@vercel/node": "^3.0.0",
     "puppeteer": "^22.0.0",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
-    "@vercel/node": "^3.0.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "ts-node": "^10.9.0",
     "@types/node": "^20.0.0",
-    "@types/puppeteer": "^7.0.0"
+    "@types/puppeteer": "^7.0.0",
+    "ts-node": "^10.9.0"
   }
 }
