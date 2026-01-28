@@ -6,20 +6,18 @@
   "scripts": {
     "test": "ts-node src/index.ts",
     "start": "node dist/index.js",
-    "build": "node_modules/.bin/tsc"
+    "build": "tsc"
   },
   "dependencies": {
-    "@sparticuz/chromium": "^143.0.4",
-    "@vercel/node": "^3.0.0",
     "puppeteer": "^22.0.0",
-    "puppeteer-core": "^24.36.1",
     "puppeteer-extra": "^3.3.6",
-    "puppeteer-extra-plugin-stealth": "^2.11.2"
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "@vercel/node": "^3.0.0",
+    "typescript": "^5.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
-    "@types/puppeteer": "^7.0.0",
     "ts-node": "^10.9.0",
-    "typescript": "^5.9.3"
+    "@types/node": "^20.0.0",
+    "@types/puppeteer": "^7.0.0"
   }
 }
