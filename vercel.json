@@ -4,12 +4,24 @@
     {
       "src": "dist/api/check.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "public/*",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/api/check",
       "dest": "/dist/api/check.js"
+    },
+    {
+      "src": "/",
+      "dest": "/public/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/$1"
     }
   ],
   "installCommand": "npm install",
