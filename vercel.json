@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/api/check.js",
+      "src": "src/api/check.ts",
       "use": "@vercel/node"
     },
     {
@@ -13,7 +13,7 @@
   "routes": [
     {
       "src": "/api/check",
-      "dest": "/dist/api/check.js"
+      "dest": "/src/api/check.ts"
     },
     {
       "src": "/",
@@ -24,6 +24,5 @@
       "dest": "/public/$1"
     }
   ],
-  "installCommand": "npm install",
-  "buildCommand": "./node_modules/typescript/bin/tsc"
+  "installCommand": "npm install"
 }
