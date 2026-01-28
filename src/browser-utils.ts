@@ -1,25 +1,22 @@
 import puppeteer from 'puppeteer-core';
-import chromium from '@sparticuz/chromium';
+const chrome = require('chrome-aws-lambda');
 
 export async function launchBrowser() {
     const isVercel = process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_VERSION;
 
     if (isVercel) {
-        console.log("Launching Chromium for Serverless...");
+        console.log("Launching Chromium for Serverless (chrome-aws-lambda)...");
         return puppeteer.launch({
-            args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
-            defaultViewport: chromium.defaultViewport,
-            executablePath: await chromium.executablePath(),
-            headless: chromium.headless,
+            args: [...chrome.args, '--hide-scrollbars', '--disable-web-security'],
+            defaultViewport: chrome.defaultViewport,
+            executablePath: await chrome.executablePath,
+            headless: chrome.headless,
+            ignoreHTTPSErrors: true,
         });
     } else {
         // Local
         try {
-            // Try using the 'puppeteer' package which includes Chrome
-            // We need to use require to avoid TS errors if types mismatch or if we want conditional import
             const p = require('puppeteer');
-            // Puppeteer-extra is already set up in local files? 
-            // If we want to use stealth locally, we should keep it.
             const pExtra = require('puppeteer-extra');
             const StealthPlugin = require('puppeteer-extra-plugin-stealth');
             pExtra.use(StealthPlugin());
