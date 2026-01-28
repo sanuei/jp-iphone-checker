@@ -1,6 +1,6 @@
-import { SoftBankChecker } from '../src/checkers/softbank';
-import { AuChecker } from '../src/checkers/au';
-import { DocomoChecker } from '../src/checkers/docomo';
+import { SoftBankChecker } from '../checkers/softbank';
+import { AuChecker } from '../checkers/au';
+import { DocomoChecker } from '../checkers/docomo';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
